@@ -15,4 +15,4 @@ export { 显示大小, 解析大小 } from "./size.ts";
 export type { 目录项, 首尾项 } from "./file.ts";
 export { 列出, 列出_首尾, 建目录, 建目录1, 读取文本行 } from "./file.ts";
 
-// TODO
+export { 解析du, 解析sha256, 读取du, 读取sha256 } from "./read.ts";
