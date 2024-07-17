@@ -52,9 +52,7 @@ export function 解析大小(大小: string): number {
   let u = "";
 
   // 检查单位
-  if (大小.endsWith(U_B)) {
-    u = U_B;
-  } else if (大小.endsWith(U_K)) {
+  if (大小.endsWith(U_K)) {
     u = U_K;
     k = K_K;
   } else if (大小.endsWith(U_M)) {
@@ -66,10 +64,13 @@ export function 解析大小(大小: string): number {
   } else if (大小.endsWith(U_T)) {
     u = U_T;
     k = K_T;
+  } else if (大小.endsWith(U_B)) {
+    // 注意: 最后再检查 B
+    u = U_B;
   }
 
   // 去除单位
-  const 数字 = 大小.slice(大小.length - u.length, 大小.length);
+  const 数字 = 大小.slice(0, 大小.length - u.length);
   const n = Number.parseFloat(数字);
   if (Number.isNaN(n) || (!Number.isFinite(n))) {
     throw new Error("bad size: " + 大小);

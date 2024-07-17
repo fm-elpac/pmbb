@@ -17,10 +17,11 @@ export function 解析du(行: Array<string>): Array<[number, string]> {
     }
 
     // 分隔符: tab (\t)
+    const S = "\t";
     // 格式: 字节数 文件路径
-    const a = i.indexOf("\t");
+    const a = i.indexOf(S);
 
-    o.push([Number.parseInt(i.slice(0, a)), i.slice(a + 1, i.length)]);
+    o.push([Number.parseInt(i.slice(0, a)), i.slice(a + S.length, i.length)]);
   }
   return o;
 }
@@ -37,10 +38,11 @@ export function 解析sha256(行: Array<string>): Array<[string, string]> {
     }
 
     // 分隔符: 空格
+    const S = "  ";
     // 格式: sha256  文件路径
-    const a = i.indexOf("  ");
+    const a = i.indexOf(S);
 
-    o.push([i.slice(0, a), i.slice(a + 1, i.length)]);
+    o.push([i.slice(0, a), i.slice(a + S.length, i.length)]);
   }
   return o;
 }
