@@ -86,3 +86,26 @@ export async function 读取sha256(目录: string): Promise<{
     d: 解析sha256(行),
   };
 }
+
+/**
+ * 从装箱计划目录读取装箱计划.
+ *
+ * bb_plan- -sha256.txt
+ */
+export async function 读取装箱计划(目录: string): Promise<{
+  f: 首尾项;
+  d: Array<[string, string]>;
+}> {
+  const l = (await 列出_首尾(目录, "bb_plan-", "-sha256.txt")).filter((i) =>
+    "f" == i.t
+  );
+  // 选择第一项
+  const f = l[0];
+  log1("  读取: " + f.p);
+
+  const 行 = await 读取文本行(f.p);
+  return {
+    f,
+    d: 解析sha256(行),
+  };
+}
