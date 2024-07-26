@@ -1,0 +1,26 @@
+[package]
+name = "tar-sha256"
+version = "0.1.0-a1"
+edition = "2021"
+license = "MIT"
+
+authors = ["secext2022 <secext2022@outlook.com>"]
+description = "Calculate sha256 of files in tar (like sha256sum)"
+repository = "https://github.com/fm-elpac/pmbb"
+keywords = ["tar", "sha256"]
+categories = ["command-line-utilities", "filesystem"]
+
+[dependencies]
+tar = "^0.4.41"
+sha2 = "^0.10.8"
+base16ct = "^0.2.0"
+
+log = "^0.4.22"
+env_logger = "^0.11.5"
+
+[build-dependencies]
+built = { version = "^0.7.4" }
+vergen-gitcl = { version = "^1.0.0", features = ["build"] }
+
+[features]
+default = ["base16ct/alloc"]

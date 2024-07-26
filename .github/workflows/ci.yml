@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,6 +20,7 @@ jobs:
 
     - run: deno fmt --check
 
+    # deno
     - run: deno task check
 
     # TODO
@@ -24,3 +28,21 @@ jobs:
     #   with:
     #     name: pmbb
     #     path: pmbb.tar.zst
+
+    # tar-sha256
+    - run: cd tar-sha256 && cargo fmt --check
+
+    - run: cd tar-sha256 && cargo build --verbose
+    - run: cd tar-sha256 && cargo test --verbose
+    - run: cd tar-sha256 && cargo doc
+
+    # host: x86_64-unknown-linux-gnu
+    - run: cd tar-sha256 && cargo build --release
+
+    - run: |
+        tar --zstd -cvf tar-sha256_release_x86_64-unknown-linux-gnu.tar.zst \
+        tar-sha256/target/release/tar-sha256
+    - uses: actions/upload-artifact@v4
+      with:
+        name: tar-sha256_release_x86_64-unknown-linux-gnu
+        path: tar-sha256_release_x86_64-unknown-linux-gnu.tar.zst

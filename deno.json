@@ -1,10 +1,30 @@
 {
+  "name": "@fm-elpac/pmbb",
+  "version": "0.1.0-a1",
+  "exports": {
+    ".": "./src/bb/mod.ts",
+    "./pmbb-scan": "./src/bin/pmbb-scan.ts",
+    "./pmbb-same": "./src/bin/pmbb-same.ts",
+    "./pmbb-box": "./src/bin/pmbb-box.ts",
+    "./pmbb-gen": "./src/bin/pmbb-gen.ts",
+    "./pmbb-delta": "./src/bin/pmbb-delta.ts"
+  },
+  "publish": {
+    "include": [
+      "README.md",
+      "LICENSE",
+      "src"
+    ]
+  },
+
   "exclude": [
-    "tmp/*"
+    "tmp/*",
+    "tar-sha256/target/*"
   ],
   "tasks": {
     "check": "deno lint && deno check -q src/**/*.ts"
   },
+
   "imports": {
     "@std/async": "jsr:@std/async@^0.224.2",
     "@std/datetime": "jsr:@std/datetime@^0.224.3",
