@@ -3,7 +3,7 @@
  */
 
 import { log1 } from "./log.ts";
-import { 列出_首尾, 读取文本行, 首尾项 } from "./file.ts";
+import { 列出_首尾, 读取文本行, type 首尾项 } from "./file.ts";
 
 /**
  * 读取 `du` 命令输出的结果.

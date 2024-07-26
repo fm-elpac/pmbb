@@ -5,7 +5,7 @@
 import { join, normalize, SEPARATOR } from "@std/path";
 
 import { log1 } from "./log.ts";
-import { 建目录, 首尾项 } from "./file.ts";
+import { 建目录, type 首尾项 } from "./file.ts";
 import { 显示大小 } from "./size.ts";
 
 /**
