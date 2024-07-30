@@ -19,7 +19,7 @@
 
   "exclude": [
     "tmp/*",
-    "tar-sha256/target/*"
+    "**/target/**/*"
   ],
   "tasks": {
     "check": "deno lint && deno check -q src/**/*.ts"

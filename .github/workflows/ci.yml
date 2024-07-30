@@ -36,9 +36,19 @@ jobs:
     - run: cd tar-sha256 && cargo test --verbose
     - run: cd tar-sha256 && cargo doc
 
+    # pmbb-ec
+    - run: cd pmbb-ec && cargo fmt --check
+
+    - run: cd pmbb-ec && cargo build --verbose
+    - run: cd pmbb-ec && cargo test --verbose
+    - run: cd pmbb-ec && cargo doc
+
+    # pmbb-ec: EC_RS recovery data test
+    - run: cd pmbb-ec/test-data/20240731-ec-rs && env RUST_LOG=debug PMBB_EC=RS_3_2_2KB ../../target/debug/pmbb-ec t2 -1.bin 2.bin -3.bin 4.ec 5.ec
+    - run: cd pmbb-ec/test-data/20240731-ec-rs && sha256sum -c sha256sum.txt
+
     # host: x86_64-unknown-linux-gnu
     - run: cd tar-sha256 && cargo build --release
-
     - run: |
         tar --zstd -cvf tar-sha256_release_x86_64-unknown-linux-gnu.tar.zst \
         tar-sha256/target/release/tar-sha256
@@ -46,3 +56,12 @@ jobs:
       with:
         name: tar-sha256_release_x86_64-unknown-linux-gnu
         path: tar-sha256_release_x86_64-unknown-linux-gnu.tar.zst
+
+    - run: cd pmbb-ec && cargo build --release
+    - run: |
+        tar --zstd -cvf pmbb-ec_release_x86_64-unknown-linux-gnu.tar.zst \
+        pmbb-ec/target/release/pmbb-ec
+    - uses: actions/upload-artifact@v4
+      with:
+        name: pmbb-ec_release_x86_64-unknown-linux-gnu
+        path: pmbb-ec_release_x86_64-unknown-linux-gnu.tar.zst

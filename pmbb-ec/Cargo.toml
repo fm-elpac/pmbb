@@ -1,0 +1,31 @@
+[package]
+name = "pmbb-ec"
+version = "0.1.0-a1"
+edition = "2021"
+license = "MIT"
+
+authors = ["secext2022 <secext2022@outlook.com>"]
+description = "Use erasure code (EC) to recovery data (pmbb)"
+repository = "https://github.com/fm-elpac/pmbb"
+keywords = ["backup", "EC", "pmbb"]
+categories = ["command-line-utilities", "filesystem"]
+
+[dependencies]
+pm-bin = "^0.1.0-a1"
+
+serde = "^1.0.204"
+serde_json = "^1.0.121"
+reed-solomon-erasure = "^6.0.0"
+sha2 = "^0.10.8"
+base16ct = "^0.2.0"
+
+
+[build-dependencies]
+pm-bin = { version = "^0.1.0-a1", features = ["build"] }
+
+[features]
+default = ["base", "simd"]
+# must ON
+base = ["base16ct/alloc"]
+# optional
+simd = ["reed-solomon-erasure/simd-accel"]
