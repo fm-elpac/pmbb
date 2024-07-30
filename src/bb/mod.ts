@@ -2,7 +2,13 @@
  * 胖喵贪吃 (PMBB) 主要代码 (库)
  */
 
-export { ENV_PMBB_BN, ENV_PMBB_BS, P_VERSION } from "./conf.ts";
+export {
+  ENV_PMBB_BN,
+  ENV_PMBB_BS,
+  ENV_PMBB_DEBUG,
+  ENV_PMBB_SORT,
+  P_VERSION,
+} from "./conf.ts";
 
 export { log1 } from "./log.ts";
 

@@ -210,16 +210,33 @@ function 解析卷描述符(b: Uint8Array): 卷描述符 {
   return o;
 }
 
+export interface 文件项 {
+  // 完整文件路径
+  路径: string;
+  // 扇区编号
+  位置: number;
+  // 文件长度 (字节)
+  长度: number;
+}
+
 // 递归遍历目录
-async function 遍历目录(f: Deno.FsFile, 上级: 目录项, 路径: string) {
+async function 遍历目录(
+  f: Deno.FsFile,
+  上级: 目录项,
+  路径: string,
+  o: Array<文件项>,
+) {
   // 防止死循环: 跳过 . 和 .. 目录
   if (上级._) {
     return;
   }
   const p = 路径 + (上级._目录 ? "/" : "");
-  // 输出扇区编号 (数据长度) 和路径
-  const 大小 = "(" + 显示大小(上级.数据长度) + " " + 上级.数据长度 + ")";
-  console.log(上级.位置, 大小, p);
+  // 保存结果
+  o.push({
+    路径: p,
+    位置: 上级.位置,
+    长度: 上级.数据长度,
+  });
   // 如果不是目录, 结束递归
   if (!上级._目录) {
     return;
@@ -239,10 +256,11 @@ async function 遍历目录(f: Deno.FsFile, 上级: 目录项, 路径: string) {
     if (长度 > 33) {
       const 项 = 解析目录项(b.slice(i, i + 长度), true);
       // 递归遍历
-      await 遍历目录(f, 项, 路径 + "/" + 项.文件名);
+      await 遍历目录(f, 项, 路径 + "/" + 项.文件名, o);
     } else if (0 == 长度) {
-      // 当前目录解析完毕
-      return;
+      // 跳过当前字节
+      i += 1;
+      continue;
     } else {
       // TODO
       console.log("长度 = " + 长度);
@@ -253,24 +271,27 @@ async function 遍历目录(f: Deno.FsFile, 上级: 目录项, 路径: string) {
 }
 
 // 输入: 光盘镜像文件 (iso)
-export async function 解析iso(文件名: string) {
+export async function 解析iso(
+  文件名: string,
+  debug: boolean = false,
+): Promise<Array<文件项>> {
   // 打开光盘镜像文件
   const f = await Deno.open(文件名);
 
   // 解析卷描述符, 从 16 扇区开始
   let vdi = 16;
-  let vd继续 = true;
   // 保存根目录
   let 根目录: 目录项 | undefined;
 
-  while (vd继续) {
+  while (true) {
     const 扇区 = await 读扇区(f, vdi);
     const vd = 解析卷描述符(扇区);
-    // debug
-    console.log(vdi, vd);
+    if (debug) {
+      console.log(vdi, vd);
+    }
 
     if (卷描述符类型_结束 == vd.类型) {
-      vd继续 = false;
+      break;
     } else if (卷描述符类型_次卷描述符 == vd.类型) {
       根目录 = vd.主!.根目录;
     }
@@ -278,12 +299,27 @@ export async function 解析iso(文件名: string) {
     vdi += 1;
   }
 
+  const o = [] as Array<文件项>;
   if (null != 根目录) {
     // 消除根目录标记
     根目录._ = false;
 
-    console.log("");
+    if (debug) {
+      console.log("");
+    }
     // 从根目录开始, 遍历目录树
-    await 遍历目录(f, 根目录, "");
+    await 遍历目录(f, 根目录, "", o);
   }
+  return o;
+}
+
+// 按照在光盘上的起始位置 (扇区编号) 排序
+export function 结果排序(o: Array<文件项>) {
+  o.sort((a, b) => a.位置 - b.位置);
+}
+
+// 输出扇区编号 (数据长度) 和路径
+export function 显示结果(i: 文件项) {
+  const 大小 = "(" + 显示大小(i.长度) + " " + i.长度 + ")";
+  console.log(i.位置, 大小, i.路径);
 }

@@ -16,6 +16,28 @@
 - <https://notabug.org/fm-elpac/pmbb>
 - <https://gitlab.com/fm-elpac/pmbb>
 
+## 相关文章
+
+- 《胖喵贪吃: 备份数据文件的小工具》
+  - <https://zhuanlan.zhihu.com/p/709721640>
+  - <https://juejin.cn/post/7392898553234554914>
+  - <https://blog.csdn.net/secext2022/article/details/140558881>
+
+- 《光盘文件系统 (iso9660) 格式解析》
+  - <https://zhuanlan.zhihu.com/p/711411492>
+  - <https://juejin.cn/post/7396248017022402623>
+  - <https://blog.csdn.net/secext2022/article/details/140758509>
+
+- 《光驱的内部结构及日常使用》
+  - <https://zhuanlan.zhihu.com/p/709093480>
+  - <https://juejin.cn/post/7392066482974556170>
+  - <https://blog.csdn.net/secext2022/article/details/140558507>
+
+- 《光盘防水嘛 ? DVD+R 刻录光盘泡水实验》
+  - <https://zhuanlan.zhihu.com/p/709978759>
+  - <https://juejin.cn/post/7393313322235904052>
+  - <https://blog.csdn.net/secext2022/article/details/140583910>
+
 TODO
 
 ## LICENSE
