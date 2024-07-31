@@ -4,7 +4,6 @@ use std::fs::{read, write};
 use std::io::Read;
 
 use pm_bin::log::debug;
-use sha2::{Digest, Sha256};
 
 mod c1;
 mod c2;
@@ -15,12 +14,17 @@ mod util;
 pub use c1::{c_c1, c_r1};
 pub use c2::{c_c2, c_r2};
 pub use err::E;
-pub use t::{EC参数, ENV_PMBB_EC, P_VERSION};
-pub use util::{file_or_stdin, Read1, 获取_ec, 解析_ec, EC};
+pub use t::{
+    EC元数据, EC元数据_EC1, EC元数据_文件, EC参数, 后缀_SHA256, ENV_PMBB_EC, L, L2, P_VERSION,
+};
+pub use util::{
+    file_or_stdin, Read1, 保存_ec元数据, 写入sha256, 写入行, 相对路径, 获取_ec, 解析_ec,
+    计算sha256, 读取_ec元数据, 读取sha256, EC,
+};
 
 /// 命令 pmbb-ec sha256
 pub fn c_sha256(a: Vec<String>) -> Result<(), Box<dyn Error>> {
-    let ec = 获取_ec("RS_0_1_4MB")?;
+    let ec = 获取_ec("RS_1_0_4MB")?;
     debug!("PMBB_EC={:?}", ec);
 
     let 文件名 = a[0].clone();
@@ -36,13 +40,8 @@ pub fn c_sha256(a: Vec<String>) -> Result<(), Box<dyn Error>> {
             break;
         }
 
-        // sha256
-        let mut h = Sha256::new();
-        h.update(&b[0..l]);
-        // 输出 hex
-        let h1 = h.finalize();
-        let hh = base16ct::lower::encode_string(&h1);
-        println!("{}", hh);
+        let h = 计算sha256(&b[0..l]);
+        println!("{}", h);
     }
     Ok(())
 }

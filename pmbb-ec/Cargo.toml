@@ -13,19 +13,17 @@ categories = ["command-line-utilities", "filesystem"]
 [dependencies]
 pm-bin = "^0.1.0-a1"
 
-serde = "^1.0.204"
+serde = { version = "^1.0.204", features = ["derive"] }
 serde_json = "^1.0.121"
 reed-solomon-erasure = "^6.0.0"
 sha2 = "^0.10.8"
-base16ct = "^0.2.0"
-
+base16ct = { version = "^0.2.0", features = ["alloc"] }
+chrono = "^0.4.38"
+relative-path = "^1.9.3"
 
 [build-dependencies]
 pm-bin = { version = "^0.1.0-a1", features = ["build"] }
 
 [features]
-default = ["base", "simd"]
-# must ON
-base = ["base16ct/alloc"]
-# optional
+default = ["simd"]
 simd = ["reed-solomon-erasure/simd-accel"]
